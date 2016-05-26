@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "dev": "webpack-dev-server --inline --hot --quiet --config webpack.dev.config.js --port 8888",
+    "dev": "webpack-dev-server --inline --hot --quiet --config webpack.dev.config.js --port 8080",
     "build": "webpack --config webpack.prod.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

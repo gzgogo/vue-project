@@ -13,18 +13,18 @@ const AppPaths = {
 };
 
 var AppPages = [
-  { title: 'Vue Project', entry: 'main', template: path.resolve(AppPaths.src, 'index.html') , fileName: 'index.html' }
+  { title: 'Vue Project', entry: ['main'], template: path.resolve(AppPaths.src, 'index.html') , fileName: 'index.html' }
 ];
 
 module.exports = {
 
   entry: {
-    'main': path.resolve(AppPaths.src, 'js/main.js')
+    'main': path.resolve(AppPaths.src, 'javascripts/main.js')
   },
 
   output: {
     path: AppPaths.dst,
-    filename: 'js/[name].min.js',
+    filename: 'javascripts/[name].min.js',
     // publicPath: '/' //默认为'/'
   },
 
@@ -64,8 +64,8 @@ module.exports = {
     如果你确定一个模块中没有其它新的依赖 就可以配置这项，webpack 将不再扫描这个文件中的依赖。
     与resolve的alias一起使用提高打包性能：
         1. webpack 检查到某个文件对vue-resource的请求；
-        2. 请求被 alias 重定向，转而请求 vue-resource/dist/vue-resource.min.js；
-        3. noParse 规则中的 /vue-resource/ 一条生效，所以 webpack 就直接把依赖打包进了 bundle.js 。
+        2. 请求被 alias 重定向，转而请求 vue-resource/dist/vue-resource.min.javascripts；
+        3. noParse 规则中的 /vue-resource/ 一条生效，所以 webpack 就直接把依赖打包进了 bundle.javascripts 。
     * */
     noParse: [/^vue$/, /vue-resource/]
   },
@@ -77,13 +77,13 @@ module.exports = {
     loaders: {
       css: 'style!css',
       stylus: 'style!css!stylus'
-      // js: 'babel'
+      // javascripts: 'babel'
     }
   },
 
   plugins: [
     //提取公共模块
-    // new webpack.optimize.CommonsChunkPlugin({name: 'common', filename: 'common.js', chunks: ['main.js']}),
+    // new webpack.optimize.CommonsChunkPlugin({name: 'common', filename: 'common.javascripts', chunks: ['main.javascripts']}),
 
     // 当使用webpack-dev-server --hot选项时不需要添加改插件，命令会自己添加
     // new webpack.HotModuleReplacementPlugin(),
@@ -104,13 +104,13 @@ module.exports = {
       //utils: path.resolve(__dirname, "utils"),
       //filters: path.resolve(__dirname, "filters"),
       'vue-resource': path.normalize("vue-resource/dist/vue-resource.min.js")
-      //"vue-loader": path.normalize("vue/dist/vue.min.js")
+      //"vue-loader": path.normalize("vue/dist/vue.min.javascripts")
     }
   },
 
   //webpack-dev-server会自动使用devServer进行配置
   //注意使用该对象设置hot为ture时，需要在plugins内添加HotModuleReplacementPlugin插件
-  //或者直接在命令行内使用 webpack-dev-server --inline --hot --config webpack.dev.config.js，不需额外配置
+  //或者直接在命令行内使用 webpack-dev-server --inline --hot --config webpack.dev.config.javascripts，不需额外配置
   //此项目使用后者
   // devServer: {
   //   // contentBase: PATHS.dist,
@@ -131,7 +131,8 @@ function HtmlWebpackPluginPages(pages) {
     return new HtmlWebpackPlugin({
       title: page.title,
       filename: page.fileName,
-      chunks: [page.entry],
+      chunks: page.entry,
+      chunksSortMode: 'none',
       // favicon: path.resolve(__dirname, 'src/img/favicon.ico'),
       template: page.template
     })

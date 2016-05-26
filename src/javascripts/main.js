@@ -3,7 +3,7 @@
  */
 //var Vue = require('vue');
 
-require("../stylesheet/common-style.styl");
+require("../stylesheets/common-style.styl");
 
 Vue.component('hello-world', require("./components/hello-world/hello-world.vue"));
 

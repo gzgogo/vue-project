@@ -13,18 +13,18 @@ const AppPaths = {
 };
 
 var AppPages = [
-  { title: 'Vue Project', entry: 'main', template: path.resolve(AppPaths.src, 'index.html') , fileName: 'index.html' }
+  { title: 'Vue Project', entry: ['main'], template: path.resolve(AppPaths.src, 'index.html') , fileName: 'index.html' }
 ];
 
 module.exports = {
 
   entry: {
-    'main': path.resolve(AppPaths.src, 'js/main.js')
+    'main': path.resolve(AppPaths.src, 'javascripts/main.js')
   },
 
   output: {
     path: AppPaths.dst,
-    filename: 'js/[name].min.js',
+    filename: 'javascripts/[name].min.js',
     // publicPath: '/' //默认为'/'
   },
 
@@ -69,8 +69,8 @@ module.exports = {
     如果你确定一个模块中没有其它新的依赖 就可以配置这项，webpack 将不再扫描这个文件中的依赖。
     与resolve的alias一起使用提高打包性能：
         1. webpack 检查到某个文件对vue-resource的请求；
-        2. 请求被 alias 重定向，转而请求 vue-resource/dist/vue-resource.min.js；
-        3. noParse 规则中的 /vue-resource/ 一条生效，所以 webpack 就直接把依赖打包进了 bundle.js 。
+        2. 请求被 alias 重定向，转而请求 vue-resource/dist/vue-resource.min.javascripts；
+        3. noParse 规则中的 /vue-resource/ 一条生效，所以 webpack 就直接把依赖打包进了 bundle.javascripts 。
     * */
     noParse: [/^vue$/, /vue-resource/]
   },
@@ -82,17 +82,17 @@ module.exports = {
     loaders: {
       css: ExtractTextPlugin.extract("css"),
       stylus: ExtractTextPlugin.extract("css!stylus")
-      // js: 'babel'
+      // javascripts: 'babel'
     }
   },
 
   plugins: [
     //此输出路径基于output.path: path.normalize("../../build/css/[name].css")
     //而且此路径只能使用基于output.path的相对路径，不能使用绝对路径
-    new ExtractTextPlugin( path.normalize("./stylesheet/[name].min.css") ),
+    new ExtractTextPlugin( path.normalize("./stylesheets/[name].min.css") ),
 
     //提取公共模块
-    // new webpack.optimize.CommonsChunkPlugin({name: 'common', filename: 'common.js', chunks: ['main.js']}),
+    // new webpack.optimize.CommonsChunkPlugin({name: 'common', filename: 'common.javascripts', chunks: ['main.javascripts']}),
 
     //设置此处，则在JS中不用类似require('vue')引入基础模块， 只要直接使用Vue变量即可
     //此处通常可用做对常用组件，库的提前设置
@@ -110,7 +110,7 @@ module.exports = {
       //utils: path.resolve(__dirname, "utils"),
       //filters: path.resolve(__dirname, "filters"),
       'vue-resource': path.normalize("vue-resource/dist/vue-resource.min.js")
-      //"vue-loader": path.normalize("vue/dist/vue.min.js")
+      //"vue-loader": path.normalize("vue/dist/vue.min.javascripts")
     }
   }
 };
@@ -121,7 +121,8 @@ function HtmlWebpackPluginPages(pages) {
     return new HtmlWebpackPlugin({
       title: page.title,
       filename: page.fileName,
-      chunks: [page.entry],
+      chunks: page.entry,
+      chunksSortMode: 'none',
       // favicon: path.resolve(__dirname, 'src/img/favicon.ico'),
       template: page.template
     })
